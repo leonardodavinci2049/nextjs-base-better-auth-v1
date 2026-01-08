@@ -16,6 +16,7 @@ const resend = new Resend(envs.RESEND_API_KEY);
 import { admin, member, owner } from "./permissions";
 
 export const auth = betterAuth({
+  appName: "AI Sales Agent",
   secret: envs.BETTER_AUTH_SECRET,
   database: createPool({
     host: envs.DATABASE_HOST,
@@ -85,7 +86,12 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
-
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 60, // 1 minute
+    },
+  },
   plugins: [
     organization({
       sendInvitationEmail: async (data) => {
